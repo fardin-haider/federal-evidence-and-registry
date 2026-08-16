@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Your Project Info -->
+    <groupId>com.federal</groupId>
+    <artifactId>evidence-registry</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <!-- Specify your Java version here (17 is the current standard LTS) -->
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>17.0.6</javafx.version>
+    </properties>
+
+    <dependencies>
+        <!-- This automatically downloads JavaFX Controls -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- This plugin allows you to run JavaFX easily from the command line -->
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <!-- Tell Maven which file contains your main() method -->
+                    <mainClass>FederalRegistryFX</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

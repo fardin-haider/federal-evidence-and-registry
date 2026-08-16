@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae94e869-13b1-4a6d-8ff3-e2b1a31a33bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Case.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/DataManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Evidence.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/FederalRegistryFX.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Person.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Suspect.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/User.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/FederalRegistryFX.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000769583317248" />
+      <entry key="S5" value="1.0261995042967431" />
+      <entry key="S10" value="1.210706443121919" />
+      <entry key="S30" value="1.92426862353456" />
+      <entry key="S60" value="2.355973762412325" />
+      <entry key="M2" value="2.6780786666352627" />
+      <entry key="M5" value="3.54256644030742" />
+      <entry key="M10" value="5.081547673639314" />
+      <entry key="M15" value="6.322043523786619" />
+      <entry key="M30" value="8.749977531981116" />
+      <entry key="H1" value="11.037757147999121" />
+      <entry key="H2" value="12.727220859724522" />
+      <entry key="H4" value="13.776273516642998" />
+      <entry key="D1" value="14.78242609925093" />
+      <entry key="W1" value="14.968562939855223" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="2.1413980868315386E-132" />
+      <entry key="S10" value="1.7562229076521116E-66" />
+      <entry key="S30" value="1.817007099242697E-22" />
+      <entry key="S60" value="1.8978448367081774E-11" />
+      <entry key="M2" value="6.4688702509110385E-6" />
+      <entry key="M5" value="0.0163342200465176" />
+      <entry key="M10" value="0.2480288580332247" />
+      <entry key="M15" value="0.6342480121154171" />
+      <entry key="M30" value="1.6946068383500337" />
+      <entry key="H1" value="2.859766598919524" />
+      <entry key="H2" value="3.76153500059256" />
+      <entry key="H4" value="4.330592214049006" />
+      <entry key="D1" value="4.8806292001291665" />
+      <entry key="W1" value="4.982743880055332" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.8066417592221263" />
+      <entry key="MS500" value="0.9579352182226964" />
+      <entry key="S2" value="0.9893889415184968" />
+      <entry key="S5" value="1.0207928204823467" />
+      <entry key="S10" value="1.1994985116065444" />
+      <entry key="S30" value="1.9035470873949483" />
+      <entry key="S60" value="2.339527750881636" />
+      <entry key="M2" value="2.667582802373579" />
+      <entry key="M5" value="3.5529832237314665" />
+      <entry key="M10" value="5.324737972509819" />
+      <entry key="M15" value="6.951751701834464" />
+      <entry key="M30" value="10.440846992992128" />
+      <entry key="H1" value="13.894933135291529" />
+      <entry key="H2" value="16.487193491628666" />
+      <entry key="H4" value="18.106001901470993" />
+      <entry key="D1" value="19.66289815689548" />
+      <entry key="W1" value="19.951284023515246" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3HfXNBGjhILvPl0NNqdMGJQ9nla" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.FederalRegistryFX.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FederalRegistryGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.projectv2.FederalRegistryGUI.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.evidence-registry [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/mehri/IdeaProjects/FEandSR/src/Main.java&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\mehri\IdeaProjects\FEandSR" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.FederalRegistryGUI">
+    <configuration name="FederalRegistryFX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="main.java.FederalRegistryFX" />
+      <module name="FEandSR" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="main.java.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FederalRegistryGUI" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="FederalRegistryGUI" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FederalRegistryFX" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ae94e869-13b1-4a6d-8ff3-e2b1a31a33bd" name="Changes" comment="" />
+      <created>1786260057433</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1786260057433</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
