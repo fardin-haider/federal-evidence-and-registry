@@ -7,7 +7,7 @@ public class User extends Person {
         super(id, firstName, lastName, dob);
         this.username = username;
         this.password = password;
-        this.role = role;
+        this.role = role;  //hello
     }
 
     public String getUsername() { return username; }
