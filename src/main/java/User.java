@@ -12,5 +12,5 @@ public class User extends Person {
 
     public String getUsername() { return username; }
     public String getPassword() { return password; }
-    public String getRole() { return role; }
+    public String getRole() { return role; } // demo change
 }
