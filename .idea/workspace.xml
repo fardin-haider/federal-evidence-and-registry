@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ae94e869-13b1-4a6d-8ff3-e2b1a31a33bd" name="Changes" comment="dummy change">
+    <list default="true" id="ae94e869-13b1-4a6d-8ff3-e2b1a31a33bd" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Run.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry_data.dat" beforeDir="false" afterPath="$PROJECT_DIR$/registry_data.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,61 +32,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0759382186507813" />
-      <entry key="MS500" value="2.2605686019871856" />
-      <entry key="S2" value="3.9113715490008505" />
-      <entry key="S5" value="4.536275617678069" />
-      <entry key="S10" value="4.940101504255692" />
-      <entry key="S30" value="5.810119625058255" />
-      <entry key="S60" value="6.291932842951288" />
-      <entry key="M2" value="6.643483803992975" />
-      <entry key="M5" value="7.526047424028237" />
-      <entry key="M10" value="9.070919575101364" />
-      <entry key="M15" value="10.313686421098636" />
-      <entry key="M30" value="12.744554802169644" />
-      <entry key="H1" value="15.034459672975363" />
-      <entry key="H2" value="16.72535571590643" />
-      <entry key="H4" value="17.775273757795826" />
-      <entry key="D1" value="18.78224873289911" />
-      <entry key="W1" value="18.968537317967513" />
+      <entry key="MS100" value="3.250407187156105E-47" />
+      <entry key="MS500" value="5.078403645362295E-10" />
+      <entry key="S2" value="0.008733827428713379" />
+      <entry key="S5" value="0.4546041811188465" />
+      <entry key="S10" value="1.905335596075336" />
+      <entry key="S30" value="5.435829689802273" />
+      <entry key="S60" value="7.289534426672365" />
+      <entry key="M2" value="8.538161601596702" />
+      <entry key="M5" value="10.022950570286191" />
+      <entry key="M10" value="11.776743313190286" />
+      <entry key="M15" value="13.095472690152327" />
+      <entry key="M30" value="15.61408819984229" />
+      <entry key="H1" value="17.959222009389507" />
+      <entry key="H2" value="19.684050174583167" />
+      <entry key="H4" value="20.753477190911834" />
+      <entry key="D1" value="21.77843319705039" />
+      <entry key="W1" value="21.967987411709643" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="1.7808339704268543E-132" />
-      <entry key="S10" value="1.6015579155335232E-66" />
-      <entry key="S30" value="1.7620205168663068E-22" />
-      <entry key="S60" value="1.8689077763321968E-11" />
-      <entry key="M2" value="6.4193643285460424E-6" />
-      <entry key="M5" value="0.016284102807567834" />
-      <entry key="M10" value="0.24764806020180857" />
-      <entry key="M15" value="0.6335986733984459" />
-      <entry key="M30" value="1.6937391528451553" />
-      <entry key="H1" value="2.8590343654350594" />
-      <entry key="H2" value="3.7610534056587785" />
-      <entry key="H4" value="4.330314979086438" />
-      <entry key="D1" value="4.880577124220518" />
-      <entry key="W1" value="4.982736284954342" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000000000005174" />
+      <entry key="S2" value="1.000848087064668" />
+      <entry key="S5" value="1.0590712519975252" />
+      <entry key="S10" value="1.2430457816904565" />
+      <entry key="S30" value="1.6240643336537786" />
+      <entry key="S60" value="1.7899774260550527" />
+      <entry key="M2" value="1.8888123821200753" />
+      <entry key="M5" value="1.9694058427747936" />
+      <entry key="M10" value="2.2180143022767913" />
+      <entry key="M15" value="2.6071540153617327" />
+      <entry key="M30" value="3.6713457552346096" />
+      <entry key="H1" value="4.84279277570848" />
+      <entry key="H2" value="5.7509784511035935" />
+      <entry key="H4" value="6.32466057296421" />
+      <entry key="D1" value="6.879535301978524" />
+      <entry key="W1" value="6.982584815886867" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.017808168343614" />
-      <entry key="MS500" value="2.2275533977251363" />
-      <entry key="S2" value="3.892825621860642" />
-      <entry key="S5" value="4.526293998673859" />
-      <entry key="S10" value="4.926990248955181" />
-      <entry key="S30" value="5.789026727289931" />
-      <entry key="S60" value="6.2752338542421935" />
-      <entry key="M2" value="6.632815256990772" />
-      <entry key="M5" value="7.536330768580424" />
-      <entry key="M10" value="9.313685719965214" />
-      <entry key="M15" value="10.942716041531332" />
-      <entry key="M30" value="14.434541552831215" />
-      <entry key="H1" value="17.89089561958003" />
-      <entry key="H2" value="20.48484271732935" />
-      <entry key="H4" value="22.104722845091874" />
-      <entry key="D1" value="23.662668363322304" />
-      <entry key="W1" value="23.95125075613396" />
+      <entry key="MS100" value="7.088867803175106E-34" />
+      <entry key="MS500" value="2.3457971011980856E-7" />
+      <entry key="S2" value="0.029172504308050542" />
+      <entry key="S5" value="0.689177784141948" />
+      <entry key="S10" value="2.5350991419255" />
+      <entry key="S30" value="6.760496799700494" />
+      <entry key="S60" value="8.908251939057246" />
+      <entry key="M2" value="10.334195104462419" />
+      <entry key="M5" value="11.95221820097116" />
+      <entry key="M10" value="13.972594241440056" />
+      <entry key="M15" value="15.686489868320177" />
+      <entry key="M30" value="19.275869783410247" />
+      <entry key="H1" value="22.79650026577079" />
+      <entry key="H2" value="25.432000629041774" />
+      <entry key="H4" value="27.076539990006033" />
+      <entry key="D1" value="28.657688851510787" />
+      <entry key="W1" value="28.950531925689646" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -98,39 +101,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.FederalRegistryFX.executor": "Run",
-    "Application.FederalRegistryGUI.executor": "Run",
-    "Application.MainApp.executor": "Run",
-    "Application.projectv2.FederalRegistryGUI.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "Maven.evidence-registry [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/mehri/IdeaProjects/FEandSR",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/mehri/IdeaProjects/FEandSR/src/Main.java",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.FederalRegistryFX.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FederalRegistryGUI.executor&quot;: &quot;Run&quot;,
+    &quot;Application.MainApp.executor&quot;: &quot;Run&quot;,
+    &quot;Application.projectv2.FederalRegistryGUI.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Maven.evidence-registry [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/mehri/IdeaProjects/FEandSR&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/mehri/IdeaProjects/FEandSR/src/Main.java&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\mehri\IdeaProjects\FEandSR" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FederalRegistryGUI">
+  <component name="RunManager" selected="Application.Run">
     <configuration name="FederalRegistryFX" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="main.java.FederalRegistryFX" />
       <module name="FEandSR" />
@@ -146,12 +149,21 @@
     </configuration>
     <configuration name="FederalRegistryGUI" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="FederalRegistryGUI" />
+      <module name="evidence-registry" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Run" />
+      <module name="evidence-registry" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Run" />
         <item itemvalue="Application.FederalRegistryFX" />
       </list>
     </recent_temporary>
