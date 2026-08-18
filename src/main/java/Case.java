@@ -12,7 +12,7 @@ public class Case implements Serializable {
     public Case(String caseId, String title, String dateOpened, String status) {
         this.caseId = caseId;
         this.title = title;
-        this.dateOpened = dateOpened;
+        this.dateOpened = dateOpened; // hello, me finally hereee using git
         this.status = status;
         this.suspectIds = new ArrayList<>();
         this.evidenceIds = new ArrayList<>();
