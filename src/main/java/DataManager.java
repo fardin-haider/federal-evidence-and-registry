@@ -1,6 +1,13 @@
 import java.io.*;
 import java.util.HashMap;
 
+/**
+ * Owns all in-memory data and handles persistence to/from disk.
+ *
+ * This class is intentionally free of JavaFX imports - it doesn't know a UI
+ * exists. FederalRegistryFX reads/writes these maps directly and is
+ * responsible for turning them into on-screen tables/dialogs.
+ */
 public class DataManager {
     public HashMap<String, User> users = new HashMap<>();
     public HashMap<String, Suspect> suspects = new HashMap<>();
@@ -39,7 +46,15 @@ public class DataManager {
         }
     }
 
-    // Report Generation: Export Dossier to .txt file
+    // Report Generation: Export a bare-bones dossier to a .txt file.
+    //
+    // NOTE FOR TEAMMATES: this method is currently unused. The "Export Case
+    // Dossier" button in the UI calls FederalRegistryFX.generateComprehensiveDossier()
+    // instead, which writes a fuller report (linked suspects + evidence). Left
+    // in place rather than deleted since removing it wasn't part of the
+    // UI/UX pass, but it's dead code worth reconciling with the UI version
+    // in a future cleanup (either delete this one, or move the "comprehensive"
+    // version here so report-generation logic lives in one place, not the UI).
     public void exportCaseDossier(String caseId) {
         Case c = cases.get(caseId);
         if (c == null) {

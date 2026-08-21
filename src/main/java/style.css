@@ -1,0 +1,223 @@
+/*
+ * style.css - Comprehensive Dark Theme for Federal Registry FX
+ */
+
+.root {
+    -fx-background-color: #1e2227;
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+.label {
+    -fx-text-fill: #abb2bf;
+    -fx-font-size: 13px;
+}
+
+/* Header Bar */
+.header-bar {
+    -fx-background-color: #181a1f;
+    -fx-padding: 12px 18px;
+    -fx-border-color: #2c313a;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.welcome-label {
+    -fx-text-fill: #61afef;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.login-title {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+/* Content & Layout Panes */
+.content-pane {
+    -fx-background-color: #21252b;
+}
+
+/* Search and Filter Bars */
+.filter-bar {
+    -fx-background-color: #282c34;
+    -fx-border-color: #353b45;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.action-bar {
+    -fx-background-color: #282c34;
+    -fx-border-color: #353b45;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* Warning & Danger Alerts */
+.danger-text {
+    -fx-text-fill: #e06c75;
+    -fx-font-weight: bold;
+}
+
+.danger-button {
+    -fx-background-color: #e06c75;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.danger-button:hover {
+    -fx-background-color: #ff7b85;
+}
+
+/* Buttons */
+.button {
+    -fx-background-color: #3e4451;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 14px;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #61afef;
+    -fx-text-fill: #181a1f;
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+}
+
+/* Tab Header Navigation */
+.tab-pane .tab-header-background {
+    -fx-background-color: #181a1f;
+}
+
+.tab-pane .tab {
+    -fx-background-color: #21252b;
+    -fx-padding: 6px 16px;
+    -fx-background-radius: 4px 4px 0 0;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: #282c34;
+    -fx-border-color: #61afef;
+    -fx-border-width: 2px 0 0 0;
+}
+
+.tab-pane .tab .tab-label {
+    -fx-text-fill: #abb2bf;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #ffffff;
+}
+
+/* Table Views */
+.table-view {
+    -fx-background-color: #21252b;
+    -fx-control-inner-background: #21252b;
+    -fx-control-inner-background-alt: #282c34;
+    -fx-table-cell-border-color: #2c313a;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #181a1f;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #abb2bf;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-text-fill: #abb2bf;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #3b4252;
+}
+
+.table-cell {
+    -fx-text-fill: #abb2bf;
+}
+
+/* List Views */
+.list-view {
+    -fx-background-color: #21252b;
+    -fx-control-inner-background: #21252b;
+    -fx-border-color: #353b45;
+    -fx-border-radius: 4px;
+}
+
+.list-cell {
+    -fx-text-fill: #abb2bf;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #3b4252;
+}
+
+/* Text Areas (Intelligence Search & Logs) */
+.text-area, .text-area .content {
+    -fx-background-color: #1e2227;
+    -fx-text-fill: #abb2bf;
+    -fx-border-color: #353b45;
+    -fx-highlight-fill: #61afef;
+    -fx-highlight-text-fill: #181a1f;
+}
+
+/* Inputs, Dropdowns & DatePickers */
+.text-field, .password-field, .combo-box, .combo-box-base, .date-picker {
+    -fx-background-color: #2c313a;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #5c6370;
+    -fx-border-color: #3e4451;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+}
+
+.text-field:focused, .password-field:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #61afef;
+}
+
+.combo-box .list-cell {
+    -fx-text-fill: #ffffff;
+}
+
+/* Context Menus */
+.context-menu {
+    -fx-background-color: #282c34;
+    -fx-border-color: #3e4451;
+    -fx-border-radius: 4px;
+    -fx-padding: 4px;
+}
+
+.menu-item .label {
+    -fx-text-fill: #abb2bf;
+}
+
+.menu-item:focused {
+    -fx-background-color: #61afef;
+}
+
+.menu-item:focused .label {
+    -fx-text-fill: #181a1f;
+}
+
+/* Dialog Panes & Alerts */
+.dialog-pane {
+    -fx-background-color: #21252b;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: #181a1f;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: #61afef;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.separator .line {
+    -fx-border-color: #353b45;
+    -fx-border-width: 1px;
+}
