@@ -37,9 +37,9 @@ public class FederalRegistryFX extends Application {
         this.primaryStage = primaryStage;
         db = new DataManager();
         db.loadData();
-        seedAdminUser();
+        //seedAdminUser();
 
-        primaryStage.setTitle("Federal Evidence & Suspect Registry");
+        //primaryStage.setTitle("Federal Evidence & Suspect Registry");
 
         primaryStage.setOnCloseRequest(e -> {
             db.saveData();

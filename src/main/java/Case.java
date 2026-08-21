@@ -25,5 +25,6 @@ public class Case implements Serializable {
     public String getTitle() { return title; }
     public String getStatus() { return status; }
     public String getDateOpened() { return dateOpened; }
+
     public void setStatus(String status) { this.status = status; }
 }
