@@ -5,17 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ae94e869-13b1-4a6d-8ff3-e2b1a31a33bd" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Case.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Case.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DataManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Evidence.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Evidence.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FederalRegistryFX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FederalRegistryFX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Run.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Run.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Suspect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Suspect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/registry_data.dat" beforeDir="false" afterPath="$PROJECT_DIR$/registry_data.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
