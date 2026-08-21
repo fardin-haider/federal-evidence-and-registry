@@ -123,7 +123,7 @@
 }
 
 .table-view .column-header .label {
-    -fx-text-fill: #abb2bf;
+    -fx-text-fill: #000;
     -fx-font-weight: bold;
 }
 

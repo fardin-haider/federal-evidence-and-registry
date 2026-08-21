@@ -341,7 +341,7 @@ public class FederalRegistryFX extends Application {
         welcomeLabel = new Label();
         welcomeLabel.getStyleClass().add(CLASS_WELCOME_LABEL);
 
-        Button logoutBtn = new Button("Logout / Lock");
+        Button logoutBtn = new Button("Logout");
         logoutBtn.setOnAction(e -> {
             loggedInUser = null;
             primaryStage.setScene(loginScene);
