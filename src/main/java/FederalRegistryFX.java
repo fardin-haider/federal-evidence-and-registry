@@ -8,6 +8,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -33,7 +34,10 @@ public class FederalRegistryFX extends Application {
     private User loggedInUser = null;
 
     private Stage primaryStage;
-    private Scene loginScene, dashboardScene;
+//    private Scene loginScene, dashboardScene;
+// Replace the old Scene fields with Pane fields:
+    private Parent loginPane;
+    private Parent dashboardPane;
     private String stylesheetUrl;
 
     // CSS Classes
@@ -54,55 +58,166 @@ public class FederalRegistryFX extends Application {
     private TableView<Evidence> evidenceTable;
     private TableView<User> userTable;
     private Label welcomeLabel;
+    private TabPane tabPane;
     private Tab adminTab;
     private TextArea searchDisplay;
     private ComboBox<String> deleteTypeChoice;
     private ListView<String> deleteListView;
 
+    // --- HOME DASHBOARD CONTROLS ---
+    private Label homeWelcomeLabel;
+    private Label homeCaseCountLabel;
+    private Label homeSuspectCountLabel;
+    private Label homeEvidenceCountLabel;
+    private ListView<String> homeRecentCasesList;
+    private ListView<String> homeWantedSuspectsList;
+
+//    @Override
+//    public void start(Stage primaryStage) {
+//        this.primaryStage = primaryStage;
+//        db.loadData();
+//        if (db.users.isEmpty()) db.users.put("U-001", new User("U-001", "System", "Admin", "1980-01-01", "admin", "admin123", "Admin"));
+//        stylesheetUrl = getStylesheetUrl();
+//
+//        primaryStage.setTitle("Federal Evidence & Suspect Registry");
+//        primaryStage.setOnCloseRequest(e -> { db.saveData(); System.exit(0); });
+//
+//        loginPane = new Scene(createLoginPane(), 920, 680);
+//        dashboardScene = new Scene(createDashboardPane(), 960, 700);
+//
+//        applyTheme(loginScene.getRoot());
+//        applyTheme(dashboardScene.getRoot());
+//
+//        primaryStage.setScene(loginScene);
+//        primaryStage.show();
+//    }
+
+//    /** ================== LOGIN ================== */
+//    private GridPane createLoginPane() {
+//        GridPane grid = createFormGrid();
+//        grid.setAlignment(Pos.CENTER);
+//
+//        Label title = new Label("FEDERAL REGISTRY AUTHENTICATION");
+//        title.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+//        title.getStyleClass().add(CLASS_LOGIN_TITLE);
+//
+//        TextField userField = new TextField(); userField.setPromptText("Enter agent username");
+//        PasswordField pwBox = new PasswordField(); pwBox.setPromptText("Enter secure password");
+//        Label errorLabel = new Label(); errorLabel.getStyleClass().add(CLASS_DANGER_TEXT);
+//
+//        Button btn = new Button("Authenticate"); btn.setDefaultButton(true);
+//        btn.setOnAction(e -> authenticate(userField, pwBox, errorLabel));
+//
+//        grid.add(title, 0, 0, 2, 1);
+//        grid.addRow(1, new Label("Username:"), userField);
+//        grid.addRow(2, new Label("Password:"), pwBox);
+//        grid.add(errorLabel, 0, 3, 2, 1);
+//        grid.add(new HBox(btn) {{ setAlignment(Pos.BOTTOM_RIGHT); }}, 1, 4);
+//
+//        return grid;
+//    }
+
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        db = new DataManager();
         db.loadData();
+
         if (db.users.isEmpty()) db.users.put("U-001", new User("U-001", "System", "Admin", "1980-01-01", "admin", "admin123", "Admin"));
         stylesheetUrl = getStylesheetUrl();
 
         primaryStage.setTitle("Federal Evidence & Suspect Registry");
-        primaryStage.setOnCloseRequest(e -> { db.saveData(); System.exit(0); });
 
-        loginScene = new Scene(createLoginPane(), 920, 680);
-        dashboardScene = new Scene(createDashboardPane(), 960, 700);
+        primaryStage.setOnCloseRequest(e -> {
+            db.saveData();
+            System.exit(0);
+        });
 
-        applyTheme(loginScene.getRoot());
-        applyTheme(dashboardScene.getRoot());
+        // 1. Create the two root views
+        loginPane = createLoginPane();
+        dashboardPane = createDashboardPane();
 
-        primaryStage.setScene(loginScene);
+        // 2. Initialize ONE single Scene with loginPane
+        Scene mainScene = new Scene(loginPane, 960, 700);
+        if (stylesheetUrl != null) {
+            mainScene.getStylesheets().add(stylesheetUrl);
+        }
+
+        primaryStage.setScene(mainScene);
         primaryStage.show();
     }
+    /** ==================== RESPONSIVE LOGIN PANE ==================== */
+    private StackPane createLoginPane() {
+        StackPane root = new StackPane();
+        root.getStyleClass().add("login-root");
 
+        // Centered Authentication Card
+        VBox loginCard = new VBox(16);
+        // FIX: Set max width AND lock max height so it does NOT stretch top-to-bottom on fullscreen
+        loginCard.setMaxSize(440, Region.USE_PREF_SIZE);
+        loginCard.setAlignment(Pos.CENTER);
+        loginCard.setPadding(new Insets(32, 36, 28, 36));
+        loginCard.getStyleClass().add("login-card");
 
-    /** ================== LOGIN ================== */
-    private GridPane createLoginPane() {
-        GridPane grid = createFormGrid();
-        grid.setAlignment(Pos.CENTER);
+        // 1. Top Security Badge & Titles
+        Label badgeLabel = new Label("RESTRICTED ACCESS PORTAL");
+        badgeLabel.getStyleClass().add("login-badge");
 
-        Label title = new Label("FEDERAL REGISTRY AUTHENTICATION");
-        title.setFont(Font.font("Inter", FontWeight.EXTRA_BOLD, 22));
-        title.getStyleClass().add(CLASS_LOGIN_TITLE);
+        Label title = new Label("FEDERAL REGISTRY");
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        title.getStyleClass().add("login-title");
 
-        TextField userField = new TextField(); userField.setPromptText("Enter agent username");
-        PasswordField pwBox = new PasswordField(); pwBox.setPromptText("Enter secure password");
-        Label errorLabel = new Label(); errorLabel.getStyleClass().add(CLASS_DANGER_TEXT);
+        Label subtitle = new Label("Enter authorized credentials to unlock intelligence database");
+        subtitle.setStyle("-fx-text-fill: #7f848e; -fx-font-size: 11.5px;");
+        subtitle.setWrapText(true);
+        subtitle.setTextAlignment(TextAlignment.CENTER);
 
-        Button btn = new Button("Authenticate"); btn.setDefaultButton(true);
+        VBox headerBox = new VBox(6, badgeLabel, title, subtitle);
+        headerBox.setAlignment(Pos.CENTER);
+
+        // 2. Form Inputs
+        VBox formBox = new VBox(12);
+        formBox.setAlignment(Pos.CENTER_LEFT);
+
+        Label userLabel = new Label("Agent Username");
+        userLabel.getStyleClass().add("form-field-label");
+
+        TextField userField = new TextField();
+        userField.setPromptText("e.g. admin");
+        userField.getStyleClass().add("login-input");
+
+        Label pwLabel = new Label("Security Passcode");
+        pwLabel.getStyleClass().add("form-field-label");
+
+        PasswordField pwBox = new PasswordField();
+        pwBox.setPromptText("••••••••••••");
+        pwBox.getStyleClass().add("login-input");
+
+        formBox.getChildren().addAll(userLabel, userField, pwLabel, pwBox);
+
+        // 3. Error Feedback Label
+        Label errorLabel = new Label();
+        errorLabel.getStyleClass().add(CLASS_DANGER_TEXT);
+        errorLabel.setWrapText(true);
+        errorLabel.setTextAlignment(TextAlignment.CENTER);
+
+        // 4. Authenticate Button
+        Button btn = new Button("Authenticate Agent →");
+        btn.setDefaultButton(true);
+        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.getStyleClass().add("login-button");
         btn.setOnAction(e -> authenticate(userField, pwBox, errorLabel));
 
-        grid.add(title, 0, 0, 2, 1);
-        grid.addRow(1, new Label("Username:"), userField);
-        grid.addRow(2, new Label("Password:"), pwBox);
-        grid.add(errorLabel, 0, 3, 2, 1);
-        grid.add(new HBox(btn) {{ setAlignment(Pos.BOTTOM_RIGHT); }}, 1, 3);
+        // 5. Official Footer
+        Label footerNotice = new Label("🔒 Official Federal Investigation Network\nUnauthorized access attempts are monitored and logged.");
+        footerNotice.getStyleClass().add("login-footer-text");
+        footerNotice.setTextAlignment(TextAlignment.CENTER);
 
-        return grid;
+        loginCard.getChildren().addAll(headerBox, formBox, errorLabel, btn, new Separator(), footerNotice);
+
+        root.getChildren().add(loginCard);
+        StackPane.setAlignment(loginCard, Pos.CENTER);
+        return root;
     }
 
     private void authenticate(TextField userField, PasswordField pwBox, Label errorLabel) {
@@ -110,9 +225,20 @@ public class FederalRegistryFX extends Application {
             if (u.getUsername().equalsIgnoreCase(userField.getText().trim()) && u.getPassword().equals(pwBox.getText())) {
                 loggedInUser = u;
                 welcomeLabel.setText("Active Agent: " + u.getLastName() + " | Role: " + u.getRole());
-                adminTab.setDisable(!u.getRole().equalsIgnoreCase("Admin"));
+                // 1. Reset active tab to HOME (index 0)
+                tabPane.getSelectionModel().select(0);
+
+                // 2. Dynamically show or hide the Admin Console tab
+                if (u.getRole().equalsIgnoreCase("Admin")) {
+                    if (!tabPane.getTabs().contains(adminTab)) {
+                        tabPane.getTabs().add(adminTab); // Appends Admin Console at the end
+                    }
+                } else {
+                    tabPane.getTabs().remove(adminTab); // Completely hides Admin Console for Field Agents
+                }
                 refreshAllDisplays();
-                primaryStage.setScene(dashboardScene);
+                primaryStage.getScene().setRoot(dashboardPane);
+              //  primaryStage.setScene(dashboardScene);
                 userField.clear(); pwBox.clear(); errorLabel.setText("");
                 return;
             }
@@ -129,12 +255,20 @@ public class FederalRegistryFX extends Application {
 
         welcomeLabel = new Label(); welcomeLabel.getStyleClass().add(CLASS_WELCOME_LABEL);
         Button logoutBtn = new Button("Logout"); logoutBtn.getStyleClass().add(CLASS_DANGER_BUTTON);
-        logoutBtn.setOnAction(e -> { loggedInUser = null; primaryStage.setScene(loginScene); });
+        logoutBtn.setOnAction(e -> {
+            loggedInUser = null;
+            // 1. Reset selection to the first tab (HOME)
+            tabPane.getSelectionModel().select(0);
+            // 2. Remove Admin Console tab on logout so it's clean for the next user
+            tabPane.getTabs().remove(adminTab);
+
+            primaryStage.getScene().setRoot(loginPane); });
+            //primaryStage.setScene(loginScene); });
 
         header.setLeft(welcomeLabel); header.setRight(logoutBtn);
         borderPane.setTop(header);
 
-        TabPane tabPane = new TabPane(); tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+        tabPane = new TabPane(); tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         adminTab = new Tab("Admin Console", createAdminPane());
 
         tabPane.getTabs().addAll(
@@ -148,31 +282,220 @@ public class FederalRegistryFX extends Application {
         return borderPane;
     }
 
-    /** ================== HOME PAGE ================== */
+//    /** ================== HOME PAGE ================== */
+//    private BorderPane createHomePane() {
+//        BorderPane homePane = new BorderPane();
+//        homePane.setPadding(new Insets(15));
+//
+//        String userInfo;
+//        if (loggedInUser != null) {
+//            userInfo = "Welcome, " + loggedInUser.getLastName() + " (" + loggedInUser.getRole() + ")";
+//        } else {
+//            userInfo = "Welcome to the Federal Registry System";
+//        }
+//
+//        Label welcome = new Label(userInfo);
+//        welcome.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+//        homePane.setTop(welcome);
+//        BorderPane.setAlignment(welcome, Pos.CENTER);
+//
+//        HBox statsBox = new HBox(20);
+//        statsBox.setAlignment(Pos.CENTER);
+//        Label caseCount = new Label("Cases: " + db.cases.size());
+//        Label suspectCount = new Label("Suspects: " + db.suspects.size());
+//        Label evidenceCount = new Label("Evidence: " + db.evidence.size());
+//        statsBox.getChildren().addAll(caseCount, suspectCount, evidenceCount);
+//        homePane.setCenter(statsBox);
+//        return homePane;
+//    }
+    /** ==================== UPGRADED HOME PAGE ==================== */
+    /** ==================== RESPONSIVE HOME PANE ==================== */
     private BorderPane createHomePane() {
         BorderPane homePane = new BorderPane();
-        homePane.setPadding(new Insets(30));
+        homePane.setPadding(new Insets(20));
+        homePane.getStyleClass().add(CLASS_CONTENT_PANE);
 
-        String userInfo;
+        // 1. TOP HEADER
+        VBox headerBox = new VBox(4);
+        headerBox.setAlignment(Pos.CENTER);
+        headerBox.setPadding(new Insets(0, 0, 14, 0));
+
+        homeWelcomeLabel = new Label("Welcome to the Federal Registry System");
+        homeWelcomeLabel.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        homeWelcomeLabel.getStyleClass().add(CLASS_LOGIN_TITLE);
+
+        Label subHeader = new Label("System Status: OPERATIONAL  •  Clearance Level: CONFIDENTIAL  •  Network: SECURE");
+        subHeader.setStyle("-fx-text-fill: #7f848e; -fx-font-size: 12px;");
+        headerBox.getChildren().addAll(homeWelcomeLabel, subHeader);
+        homePane.setTop(headerBox);
+
+        // 2. CENTER CONTENT (Constrained to 1100px max width for great widescreen look)
+        VBox dashboardContent = new VBox(18);
+        dashboardContent.setMaxWidth(1100);
+        dashboardContent.setAlignment(Pos.TOP_CENTER);
+        dashboardContent.setPadding(new Insets(6));
+
+        // --- 3 Responsive Stat Cards ---
+        HBox statsBox = new HBox(16);
+        statsBox.setAlignment(Pos.CENTER);
+
+        // Card 1: Cases
+        VBox caseCard = new VBox(6);
+        caseCard.getStyleClass().addAll("stat-card", "stat-card-cases");
+        caseCard.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(caseCard, Priority.ALWAYS); // Stretches proportionally
+        Label caseTitle = new Label("📁 ACTIVE CASES");
+        caseTitle.getStyleClass().add("stat-card-title");
+        homeCaseCountLabel = new Label(String.valueOf(db.cases.size()));
+        homeCaseCountLabel.getStyleClass().addAll("stat-card-number", "stat-number-cases");
+        Label caseSub = new Label("Click to view cases →");
+        caseSub.getStyleClass().add("stat-card-sub");
+        caseCard.getChildren().addAll(caseTitle, homeCaseCountLabel, caseSub);
+        caseCard.setOnMouseClicked(e -> tabPane.getSelectionModel().select(1));
+
+        // Card 2: Suspects
+        VBox suspectCard = new VBox(6);
+        suspectCard.getStyleClass().addAll("stat-card", "stat-card-suspects");
+        suspectCard.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(suspectCard, Priority.ALWAYS); // Stretches proportionally
+        Label suspectTitle = new Label("👤 TRACKED SUSPECTS");
+        suspectTitle.getStyleClass().add("stat-card-title");
+        homeSuspectCountLabel = new Label(String.valueOf(db.suspects.size()));
+        homeSuspectCountLabel.getStyleClass().addAll("stat-card-number", "stat-number-suspects");
+        Label suspectSub = new Label("Click to view suspects →");
+        suspectSub.getStyleClass().add("stat-card-sub");
+        suspectCard.getChildren().addAll(suspectTitle, homeSuspectCountLabel, suspectSub);
+        suspectCard.setOnMouseClicked(e -> tabPane.getSelectionModel().select(2));
+
+        // Card 3: Evidence
+        VBox evidenceCard = new VBox(6);
+        evidenceCard.getStyleClass().addAll("stat-card", "stat-card-evidence");
+        evidenceCard.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(evidenceCard, Priority.ALWAYS); // Stretches proportionally
+        Label evidenceTitle = new Label("📦 LOGGED EVIDENCE");
+        evidenceTitle.getStyleClass().add("stat-card-title");
+        homeEvidenceCountLabel = new Label(String.valueOf(db.evidence.size()));
+        homeEvidenceCountLabel.getStyleClass().addAll("stat-card-number", "stat-number-evidence");
+        Label evidenceSub = new Label("Click to view evidence →");
+        evidenceSub.getStyleClass().add("stat-card-sub");
+        evidenceCard.getChildren().addAll(evidenceTitle, homeEvidenceCountLabel, evidenceSub);
+        evidenceCard.setOnMouseClicked(e -> tabPane.getSelectionModel().select(3));
+
+        statsBox.getChildren().addAll(caseCard, suspectCard, evidenceCard);
+
+        // --- Quick Action Bar ---
+        HBox actionBox = new HBox(14);
+        actionBox.setAlignment(Pos.CENTER);
+        actionBox.setPadding(new Insets(12));
+        actionBox.setMaxWidth(Double.MAX_VALUE);
+        actionBox.getStyleClass().add("home-action-bar");
+
+        Label quickLbl = new Label("Quick Actions:");
+        quickLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #abb2bf; -fx-font-size: 13px;");
+
+        Button btnCase = new Button("+ New Case");
+        btnCase.setOnAction(e -> openCreateCaseDialog());
+
+        Button btnSuspect = new Button("+ Register Suspect");
+        btnSuspect.setOnAction(e -> openRegisterSuspectDialog());
+
+        Button btnEvidence = new Button("+ Log Evidence");
+        btnEvidence.setOnAction(e -> openLogEvidenceDialog());
+
+        actionBox.getChildren().addAll(quickLbl, btnCase, btnSuspect, btnEvidence);
+
+        // --- Lower Split Activity Feeds ---
+        HBox feedsBox = new HBox(16);
+        feedsBox.setAlignment(Pos.CENTER);
+        feedsBox.setMaxWidth(Double.MAX_VALUE);
+
+        // Active Cases Panel
+        VBox recentCasesBox = new VBox(8);
+        recentCasesBox.getStyleClass().add("home-section-card");
+        recentCasesBox.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(recentCasesBox, Priority.ALWAYS); // Stretches proportionally
+        Label recentCasesHeader = new Label("⚡ Active Case Files");
+        recentCasesHeader.getStyleClass().add("home-section-header");
+        homeRecentCasesList = new ListView<>();
+        homeRecentCasesList.setPrefHeight(180);
+        homeRecentCasesList.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && homeRecentCasesList.getSelectionModel().getSelectedItem() != null) {
+                String item = homeRecentCasesList.getSelectionModel().getSelectedItem();
+                String id = item.split("\\|", 2)[0].trim();
+                Case c = db.cases.get(id);
+                if (c != null) showCaseDetails(c);
+            }
+        });
+        recentCasesBox.getChildren().addAll(recentCasesHeader, homeRecentCasesList);
+
+        // Wanted Suspects Panel
+        VBox wantedBox = new VBox(8);
+        wantedBox.getStyleClass().add("home-section-card");
+        wantedBox.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(wantedBox, Priority.ALWAYS); // Stretches proportionally
+        Label wantedHeader = new Label("🚨 Wanted Persons of Interest");
+        wantedHeader.getStyleClass().add("home-section-header");
+        homeWantedSuspectsList = new ListView<>();
+        homeWantedSuspectsList.setPrefHeight(180);
+        homeWantedSuspectsList.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2 && homeWantedSuspectsList.getSelectionModel().getSelectedItem() != null) {
+                String item = homeWantedSuspectsList.getSelectionModel().getSelectedItem();
+                String id = item.split("\\|", 2)[0].trim();
+                Suspect s = db.suspects.get(id);
+                if (s != null) showSuspectDetails(s);
+            }
+        });
+        wantedBox.getChildren().addAll(wantedHeader, homeWantedSuspectsList);
+
+        feedsBox.getChildren().addAll(recentCasesBox, wantedBox);
+
+        dashboardContent.getChildren().addAll(statsBox, actionBox, feedsBox);
+
+        // Outer center wrapper to ensure the 1100px dashboard stays centered on 1080p/4k screens
+        StackPane centerWrapper = new StackPane(dashboardContent);
+        centerWrapper.setAlignment(Pos.TOP_CENTER);
+
+        ScrollPane scrollPane = new ScrollPane(centerWrapper);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+
+        homePane.setCenter(scrollPane);
+        return homePane;
+    }
+
+    private void updateHomeStats() {
+        if (homeCaseCountLabel == null) return;
+        // 1. Update Welcome Message with active agent name
         if (loggedInUser != null) {
-            userInfo = "Welcome, " + loggedInUser.getLastName() + " (" + loggedInUser.getRole() + ")";
+            homeWelcomeLabel.setText("Welcome, Agent " + loggedInUser.getLastName() + " (" + loggedInUser.getRole() + ")");
         } else {
-            userInfo = "Welcome to the Federal Registry System";
+            homeWelcomeLabel.setText("Welcome to the Federal Registry System");
         }
 
-        Label welcome = new Label(userInfo);
-        welcome.setFont(Font.font("Inter", FontWeight.EXTRA_BOLD, 22));
-        homePane.setTop(welcome);
-        BorderPane.setAlignment(welcome, Pos.CENTER);
+        // 2. Update KPI numbers
+        homeCaseCountLabel.setText(String.valueOf(db.cases.size()));
+        homeSuspectCountLabel.setText(String.valueOf(db.suspects.size()));
+        homeEvidenceCountLabel.setText(String.valueOf(db.evidence.size()));
 
-        HBox statsBox = new HBox(20);
-        statsBox.setAlignment(Pos.CENTER);
-        Label caseCount = new Label("Cases: " + db.cases.size());
-        Label suspectCount = new Label("Suspects: " + db.suspects.size());
-        Label evidenceCount = new Label("Evidence: " + db.evidence.size());
-        statsBox.getChildren().addAll(caseCount, suspectCount, evidenceCount);
-        homePane.setCenter(statsBox);
-        return homePane;
+        // 3. Populate Active Cases Feed
+        ObservableList<String> casesList = FXCollections.observableArrayList();
+        for (Case c : db.cases.values()) {
+            if ("Open".equalsIgnoreCase(c.getStatus())) {
+                casesList.add(c.getCaseId() + " | " + c.getTitle());
+            }
+        }
+        if (casesList.isEmpty()) casesList.add("No open cases currently.");
+        homeRecentCasesList.setItems(casesList);
+
+        // 4. Populate Wanted Suspects Feed
+        ObservableList<String> wantedList = FXCollections.observableArrayList();
+        for (Suspect s : db.suspects.values()) {
+            if ("Wanted".equalsIgnoreCase(s.getStatus())) {
+                wantedList.add(s.getId() + " | " + s.getFirstName() + " " + s.getLastName());
+            }
+        }
+        if (wantedList.isEmpty()) wantedList.add("No wanted suspects recorded.");
+        homeWantedSuspectsList.setItems(wantedList);
     }
 
     /** ================== CASE MANAGEMENT ================== */
@@ -607,7 +930,7 @@ public class FederalRegistryFX extends Application {
 
     /** ================== UTILITIES & HELPERS ================== */
     private void refreshAllDisplays() {
-        masterCaseList.setAll(db.cases.values()); masterSuspectList.setAll(db.suspects.values());
+        masterCaseList.setAll(db.cases.values()); masterSuspectList.setAll(db.suspects.values()); updateHomeStats();
         masterEvidenceList.setAll(db.evidence.values()); masterUserList.setAll(db.users.values()); refreshDeleteList();
     }
 
