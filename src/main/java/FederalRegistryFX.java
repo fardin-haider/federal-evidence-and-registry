@@ -38,9 +38,9 @@ public class FederalRegistryFX extends Application {
 
     // CSS Classes
     private static final String CLASS_HEADER_BAR = "header-bar", CLASS_CONTENT_PANE = "content-pane",
-            CLASS_WELCOME_LABEL = "welcome-label", CLASS_LOGIN_TITLE = "login-title",
-            CLASS_DANGER_TEXT = "danger-text", CLASS_DANGER_BUTTON = "danger-button",
-            CLASS_FILTER_BAR = "filter-bar", CLASS_ACTION_BAR = "action-bar";
+                                CLASS_WELCOME_LABEL = "welcome-label", CLASS_LOGIN_TITLE = "login-title",
+                                CLASS_DANGER_TEXT = "danger-text", CLASS_DANGER_BUTTON = "danger-button",
+                                CLASS_FILTER_BAR = "filter-bar", CLASS_ACTION_BAR = "action-bar";
 
     // Collections
     private final ObservableList<Case> masterCaseList = FXCollections.observableArrayList();
@@ -79,13 +79,14 @@ public class FederalRegistryFX extends Application {
         primaryStage.show();
     }
 
+
     /** ================== LOGIN ================== */
     private GridPane createLoginPane() {
         GridPane grid = createFormGrid();
         grid.setAlignment(Pos.CENTER);
 
         Label title = new Label("FEDERAL REGISTRY AUTHENTICATION");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 22));
+        title.setFont(Font.font("Inter", FontWeight.EXTRA_BOLD, 22));
         title.getStyleClass().add(CLASS_LOGIN_TITLE);
 
         TextField userField = new TextField(); userField.setPromptText("Enter agent username");
@@ -99,7 +100,7 @@ public class FederalRegistryFX extends Application {
         grid.addRow(1, new Label("Username:"), userField);
         grid.addRow(2, new Label("Password:"), pwBox);
         grid.add(errorLabel, 0, 3, 2, 1);
-        grid.add(new HBox(btn) {{ setAlignment(Pos.BOTTOM_RIGHT); }}, 1, 4);
+        grid.add(new HBox(btn) {{ setAlignment(Pos.BOTTOM_RIGHT); }}, 1, 3);
 
         return grid;
     }
@@ -150,7 +151,7 @@ public class FederalRegistryFX extends Application {
     /** ================== HOME PAGE ================== */
     private BorderPane createHomePane() {
         BorderPane homePane = new BorderPane();
-        homePane.setPadding(new Insets(15));
+        homePane.setPadding(new Insets(30));
 
         String userInfo;
         if (loggedInUser != null) {
@@ -160,7 +161,7 @@ public class FederalRegistryFX extends Application {
         }
 
         Label welcome = new Label(userInfo);
-        welcome.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        welcome.setFont(Font.font("Inter", FontWeight.EXTRA_BOLD, 22));
         homePane.setTop(welcome);
         BorderPane.setAlignment(welcome, Pos.CENTER);
 
@@ -211,13 +212,15 @@ public class FederalRegistryFX extends Application {
                 createButton("Edit Selected Case", e -> requireSelection(caseTable, this::openEditCaseDialog)),
                 createButton("Quick Status", e -> requireSelection(caseTable, this::quickUpdateCaseStatus)),
                 createButton("View Full Details", e -> requireSelection(caseTable, this::showCaseDetails)),
-                createButton("Export Dossier", e -> {
-                    String id = promptText("Export Dossier", "Enter Case ID:");
-                    if (id != null && db.cases.containsKey(id.trim())) { generateDossier(id.trim()); showAlert(Alert.AlertType.INFORMATION, "Exported", "Dossier exported to Dossier_" + id.trim() + ".txt"); }
-                    else if (id != null) showAlert(Alert.AlertType.ERROR, "Not Found", "Case ID not found.");
-                })
+                createButton("Export Dossier", e -> exportDossier())
         ));
         return pane;
+    }
+
+    public void exportDossier(){
+        String id = promptText("Export Dossier", "Enter Case ID:");
+        if (id != null && db.cases.containsKey(id.trim())) { generateDossier(id.trim()); showAlert(Alert.AlertType.INFORMATION, "Exported", "Dossier exported to Dossier_" + id.trim() + ".txt"); }
+        else if (id != null) showAlert(Alert.AlertType.ERROR, "Not Found", "Case ID not found.");
     }
 
     private void openCreateCaseDialog() {
