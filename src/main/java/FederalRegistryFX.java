@@ -137,14 +137,41 @@ public class FederalRegistryFX extends Application {
         adminTab = new Tab("Admin Console", createAdminPane());
 
         tabPane.getTabs().addAll(
+                new Tab("HOME", createHomePane()),
                 new Tab("Case Management", createCasePane()),
                 new Tab("Suspect Registry", createSuspectPane()),
                 new Tab("Evidence Locker", createEvidencePane()),
-                new Tab("Search & Intelligence", createSearchPane()),
                 adminTab
         );
         borderPane.setCenter(tabPane);
         return borderPane;
+    }
+
+    /** ================== HOME PAGE ================== */
+    private BorderPane createHomePane() {
+        BorderPane homePane = new BorderPane();
+        homePane.setPadding(new Insets(15));
+
+        String userInfo;
+        if (loggedInUser != null) {
+            userInfo = "Welcome, " + loggedInUser.getLastName() + " (" + loggedInUser.getRole() + ")";
+        } else {
+            userInfo = "Welcome to the Federal Registry System";
+        }
+
+        Label welcome = new Label(userInfo);
+        welcome.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+        homePane.setTop(welcome);
+        BorderPane.setAlignment(welcome, Pos.CENTER);
+
+        HBox statsBox = new HBox(20);
+        statsBox.setAlignment(Pos.CENTER);
+        Label caseCount = new Label("Cases: " + db.cases.size());
+        Label suspectCount = new Label("Suspects: " + db.suspects.size());
+        Label evidenceCount = new Label("Evidence: " + db.evidence.size());
+        statsBox.getChildren().addAll(caseCount, suspectCount, evidenceCount);
+        homePane.setCenter(statsBox);
+        return homePane;
     }
 
     /** ================== CASE MANAGEMENT ================== */
@@ -183,7 +210,12 @@ public class FederalRegistryFX extends Application {
                 createButton("Create New Case", e -> openCreateCaseDialog()),
                 createButton("Edit Selected Case", e -> requireSelection(caseTable, this::openEditCaseDialog)),
                 createButton("Quick Status", e -> requireSelection(caseTable, this::quickUpdateCaseStatus)),
-                createButton("View Full Details", e -> requireSelection(caseTable, this::showCaseDetails))
+                createButton("View Full Details", e -> requireSelection(caseTable, this::showCaseDetails)),
+                createButton("Export Dossier", e -> {
+                    String id = promptText("Export Dossier", "Enter Case ID:");
+                    if (id != null && db.cases.containsKey(id.trim())) { generateDossier(id.trim()); showAlert(Alert.AlertType.INFORMATION, "Exported", "Dossier exported to Dossier_" + id.trim() + ".txt"); }
+                    else if (id != null) showAlert(Alert.AlertType.ERROR, "Not Found", "Case ID not found.");
+                })
         ));
         return pane;
     }
@@ -485,48 +517,6 @@ public class FederalRegistryFX extends Application {
         showTextAlert("Chain of Custody Report", "Evidence: " + ev.getEvidenceId(), sb.toString());
     }
 
-    /** ================== SEARCH & INTELLIGENCE ================== */
-    private BorderPane createSearchPane() {
-        BorderPane pane = new BorderPane(); pane.getStyleClass().add(CLASS_CONTENT_PANE);
-        searchDisplay = new TextArea(); searchDisplay.setEditable(false); searchDisplay.setFont(Font.font("Inter", 13)); searchDisplay.setWrapText(true); pane.setCenter(searchDisplay);
-
-        TextField qField = new TextField(); qField.setPromptText("Enter keyword, ID..."); qField.setPrefWidth(260);
-        ComboBox<String> entBox = new ComboBox<>(FXCollections.observableArrayList("All Categories", "Cases Only", "Suspects Only", "Evidence Only")); entBox.setValue("All Categories");
-        ComboBox<String> statBox = new ComboBox<>(FXCollections.observableArrayList("All Statuses", "Open", "Closed", "Cold", "Wanted", "In Custody", "Under Surveillance", "Cleared", "In Storage", "At Lab/Forensics")); statBox.setValue("All Statuses");
-
-        Runnable runSearch = () -> {
-            String q = qField.getText().toLowerCase().trim(), ent = entBox.getValue(), stat = statBox.getValue();
-            StringBuilder res = new StringBuilder("================= FEDERAL REGISTRY SEARCH =================\nQuery: [").append(q.isEmpty() ? "ALL" : q).append("] | Target: [").append(ent).append("] | Filter Status: [").append(stat).append("]\n\n");
-            boolean found = false;
-
-            if (ent.equals("All Categories") || ent.equals("Cases Only")) {
-                res.append("[CASE FILES]\n");
-                for (Case c : db.cases.values()) if ((stat.equals("All Statuses") || c.getStatus().equalsIgnoreCase(stat)) && (q.isEmpty() || c.getCaseId().toLowerCase().contains(q) || c.getTitle().toLowerCase().contains(q))) { found = true; res.append("  • ").append(c.getCaseId()).append(" | ").append(c.getTitle()).append(" (").append(c.getStatus()).append(")\n"); }
-            }
-            if (ent.equals("All Categories") || ent.equals("Suspects Only")) {
-                res.append("\n[SUSPECT PROFILES]\n");
-                for (Suspect s : db.suspects.values()) if ((stat.equals("All Statuses") || s.getStatus().equalsIgnoreCase(stat)) && (q.isEmpty() || s.getId().toLowerCase().contains(q) || s.getFirstName().toLowerCase().contains(q) || s.getLastName().toLowerCase().contains(q))) { found = true; res.append("  • ").append(s.getId()).append(" | ").append(s.getFirstName()).append(" ").append(s.getLastName()).append(" (").append(s.getStatus()).append(")\n"); }
-            }
-            if (ent.equals("All Categories") || ent.equals("Evidence Only")) {
-                res.append("\n[LOGGED EVIDENCE]\n");
-                for (Evidence ev : db.evidence.values()) if ((stat.equals("All Statuses") || ev.getStatus().equalsIgnoreCase(stat)) && (q.isEmpty() || ev.getEvidenceId().toLowerCase().contains(q) || ev.getDescription().toLowerCase().contains(q))) { found = true; res.append("  • ").append(ev.getEvidenceId()).append(" | Case ").append(ev.getCaseId()).append(" | ").append(ev.getType()).append(" (").append(ev.getStatus()).append(")\n"); }
-            }
-            if (!found) res.append(">>> No records matched your criteria.\n");
-            searchDisplay.setText(res.toString());
-        };
-
-        HBox topBox = createActionBar(new Label("Query:"), qField, new Label("Category:"), entBox, new Label("Status:"), statBox,
-                createButton("Search", e -> runSearch.run()),
-                createButton("✕ Clear", e -> { qField.clear(); entBox.setValue("All Categories"); statBox.setValue("All Statuses"); runSearch.run(); }),
-                createButton("Export Dossier", e -> {
-                    String id = promptText("Export Dossier", "Enter Case ID:");
-                    if (id != null && db.cases.containsKey(id.trim())) { generateDossier(id.trim()); showAlert(Alert.AlertType.INFORMATION, "Exported", "Dossier exported to Dossier_" + id.trim() + ".txt"); }
-                    else if (id != null) showAlert(Alert.AlertType.ERROR, "Not Found", "Case ID not found.");
-                })
-        );
-        topBox.getStyleClass().remove(CLASS_ACTION_BAR); topBox.getStyleClass().add(CLASS_FILTER_BAR);
-        pane.setTop(topBox); runSearch.run(); return pane;
-    }
 
     /** ================== ADMIN CONSOLE ================== */
     private VBox createAdminPane() {
