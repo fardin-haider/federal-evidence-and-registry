@@ -1,20 +1,16 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Evidence.java - Tracks physical, digital, and documentary evidence.
- *
- * UI/UX Improvements:
- * - Added setType(), setDescription(), and setCaseId() to enable editing evidence records.
- * - Chain of custody records any automated modifications made during edits.
- */
 public class Evidence implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String evidenceId;
     private String caseId;
-    private String type; // Weapon, Digital, Document, Biological
+    private String type;
     private String description;
-    private String status; // In Storage, At Lab/Forensics, Released/Destroyed
-    private ArrayList<String> custodyLog;
+    private String status;
+    private List<String> custodyLog = new ArrayList<>();
 
     public Evidence(String evidenceId, String caseId, String type, String description, String status) {
         this.evidenceId = evidenceId;
@@ -22,22 +18,18 @@ public class Evidence implements Serializable {
         this.type = type;
         this.description = description;
         this.status = status;
-        this.custodyLog = new ArrayList<>();
     }
 
-    public void logCustody(String logEntry) { this.custodyLog.add(logEntry); }
-
-    // Getters
     public String getEvidenceId() { return evidenceId; }
-    public String getStatus() { return status; }
     public String getCaseId() { return caseId; }
-    public String getType() { return type; }
-    public String getDescription() { return description; }
-    public ArrayList<String> getCustodyLog() { return new ArrayList<>(custodyLog); }
-
-    // Setters for editing
-    public void setStatus(String status) { this.status = status; }
-    public void setType(String type) { this.type = type; }
-    public void setDescription(String description) { this.description = description; }
     public void setCaseId(String caseId) { this.caseId = caseId; }
+    public String getType() { return type; }
+    public void setType(String type) { this.type = type; }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+
+    public List<String> getCustodyLog() { return custodyLog; }
+    public void logCustody(String entry) { custodyLog.add(entry); }
 }

@@ -76,6 +76,7 @@ public class FederalRegistryFX extends Application {
     private static final String CLASS_FILTER_BAR = "filter-bar";
     private static final String CLASS_ACTION_BAR = "action-bar";
 
+
     // Master Observable Collections (Holds ground-truth data for JavaFX)
     private ObservableList<Case> masterCaseList = FXCollections.observableArrayList();
     private ObservableList<Suspect> masterSuspectList = FXCollections.observableArrayList();
@@ -111,6 +112,15 @@ public class FederalRegistryFX extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+
+        if (stylesheetUrl != null) {
+            loginScene.getStylesheets().add(stylesheetUrl);
+            dashboardScene.getStylesheets().add(stylesheetUrl);
+        }
+
+        stylesheetUrl = getStylesheetUrl();
+        System.out.println("CSS URL: " + stylesheetUrl); // Add this line!
+
         this.primaryStage = primaryStage;
         db = new DataManager();
         db.loadData();
@@ -137,6 +147,7 @@ public class FederalRegistryFX extends Application {
         primaryStage.setScene(loginScene);
         primaryStage.show();
     }
+
 
     /**
      * Seeds realistic dummy data if the database is currently empty.
@@ -348,6 +359,7 @@ public class FederalRegistryFX extends Application {
         });
 
         header.setLeft(welcomeLabel);
+        logoutBtn.getStyleClass().add(CLASS_DANGER_BUTTON);
         header.setRight(logoutBtn);
         borderPane.setTop(header);
 
@@ -1504,10 +1516,11 @@ public class FederalRegistryFX extends Application {
      * ========================================================================= */
     private VBox createAdminPane() {
         VBox pane = new VBox(14);
+        pane.setAlignment(Pos.CENTER);
         pane.getStyleClass().add(CLASS_CONTENT_PANE);
         pane.setPadding(new Insets(18));
 
-        Label warningLabel = new Label("ADMINISTRATOR CONSOLE — ACCESS RESTRICTED\nModify agent roles, register personnel, or purge classified records.");
+        Label warningLabel = new Label("ADMINISTRATOR CONSOLE");
         warningLabel.getStyleClass().add(CLASS_DANGER_TEXT);
         warningLabel.setTextAlignment(TextAlignment.CENTER);
 
