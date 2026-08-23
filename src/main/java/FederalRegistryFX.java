@@ -265,6 +265,9 @@ public class FederalRegistryFX extends Application {
             primaryStage.getScene().setRoot(loginPane); });
             //primaryStage.setScene(loginScene); });
 
+
+        BorderPane.setMargin(logoutBtn,new Insets(15,20,0,0) );
+        BorderPane.setMargin(welcomeLabel,new Insets(8,0,8,30) );
         header.setLeft(welcomeLabel); header.setRight(logoutBtn);
         borderPane.setTop(header);
 
@@ -391,8 +394,8 @@ public class FederalRegistryFX extends Application {
         actionBox.getStyleClass().add("home-action-bar");
 
         Label quickLbl = new Label("Quick Actions:");
-        quickLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #abb2bf; -fx-font-size: 13px;");
-
+        //quickLbl.setStyle("-fx-font-weight: bold; -fx-text-fill: #abb2bf; -fx-font-size: 13px;");
+        quickLbl.getStyleClass().add(CLASS_DANGER_TEXT);
         Button btnCase = new Button("+ New Case");
         btnCase.setOnAction(e -> openCreateCaseDialog());
 

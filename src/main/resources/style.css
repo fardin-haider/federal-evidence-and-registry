@@ -45,6 +45,12 @@
     -fx-font-size: 22px;
     -fx-font-weight: bold;
 }
+.welcome-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+
+}
 
 .form-field-label {
     -fx-text-fill: #abb2bf;
@@ -283,7 +289,7 @@
     -fx-font-weight: bold;
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
-    -fx-padding: 6px 12px;
+    -fx-padding: 6px 30px;
     -fx-cursor: hand;
 }
 
