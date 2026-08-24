@@ -936,7 +936,14 @@ public class FederalRegistryFX extends Application {
         masterCaseList.setAll(db.cases.values()); masterSuspectList.setAll(db.suspects.values()); updateHomeStats();
         masterEvidenceList.setAll(db.evidence.values()); masterUserList.setAll(db.users.values()); refreshDeleteList();
     }
-
+    private void validateAgentCredentials(String username, String password) throws RegistryValidationException {
+        if (username == null || username.trim().isEmpty()) {
+            throw new RegistryValidationException("Username cannot be blank.");
+        }
+        if (password == null || password.length() < 4) {
+            throw new RegistryValidationException("Security password must be at least 4 characters.");
+        }
+    }
     private <S, T> TableColumn<S, T> createCol(String title, double width, Function<S, String> mapper) {
         TableColumn<S, T> col = new TableColumn<>(title); col.setCellValueFactory(data -> (ObservableValue<T>) new SimpleStringProperty(mapper.apply(data.getValue()))); col.setPrefWidth(width); return col;
     }

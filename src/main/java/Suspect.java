@@ -12,6 +12,10 @@ public class Suspect extends Person {
         this.physicalTraits = physicalTraits;
         this.status = status;
     }
+    @Override
+    public String getRoleDescription() {
+        return "Person of Interest / Suspect [Status: " + getStatus() + "]";
+    }
 
     public String getPhysicalTraits() { return physicalTraits; }
     public void setPhysicalTraits(String physicalTraits) { this.physicalTraits = physicalTraits; }

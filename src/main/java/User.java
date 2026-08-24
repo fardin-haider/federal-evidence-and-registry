@@ -16,6 +16,11 @@ public class User extends Person {
         this.role = role;
     }
 
+    @Override
+    public String getRoleDescription() {
+        return "Authorized Personnel [" + getRole() + "]";
+    }
+
     // Getters
     public String getUsername() { return username; }
     public String getPassword() { return password; }
