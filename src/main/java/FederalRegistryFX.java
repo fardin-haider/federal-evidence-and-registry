@@ -206,7 +206,13 @@ public class FederalRegistryFX extends Application {
         btn.setDefaultButton(true);
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.getStyleClass().add("login-button");
-        btn.setOnAction(e -> authenticate(userField, pwBox, errorLabel));
+        btn.setOnAction(e -> {
+            try {
+                authenticate(userField, pwBox, errorLabel);
+            } catch (RegistryValidationException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
         // 5. Official Footer
         Label footerNotice = new Label("🔒 Official Federal Investigation Network\nUnauthorized access attempts are monitored and logged.");
@@ -220,7 +226,7 @@ public class FederalRegistryFX extends Application {
         return root;
     }
 
-    private void authenticate(TextField userField, PasswordField pwBox, Label errorLabel) {
+    private void authenticate(TextField userField, PasswordField pwBox, Label errorLabel) throws RegistryValidationException {
         for (User u : db.users.values()) {
             if (u.getUsername().equalsIgnoreCase(userField.getText().trim()) && u.getPassword().equals(pwBox.getText())) {
                 loggedInUser = u;
@@ -243,6 +249,7 @@ public class FederalRegistryFX extends Application {
                 return;
             }
         }
+        validateAgentCredentials(userField.getText().trim(), pwBox.getText());
         errorLabel.setText("Access Denied: Invalid agent credentials.");
         showAlert(Alert.AlertType.ERROR, "Authentication Error", "Access Denied. Invalid credentials.");
     }
@@ -944,8 +951,11 @@ public class FederalRegistryFX extends Application {
             throw new RegistryValidationException("Security password must be at least 4 characters.");
         }
     }
+    //S=Source, T=Target.
     private <S, T> TableColumn<S, T> createCol(String title, double width, Function<S, String> mapper) {
-        TableColumn<S, T> col = new TableColumn<>(title); col.setCellValueFactory(data -> (ObservableValue<T>) new SimpleStringProperty(mapper.apply(data.getValue()))); col.setPrefWidth(width); return col;
+        TableColumn<S, T> col = new TableColumn<>(title);
+        col.setCellValueFactory(data -> (ObservableValue<T>) new SimpleStringProperty(mapper.apply(data.getValue())))
+        ; col.setPrefWidth(width); return col;
     }
 
     private <T> void setupTableInteractions(TableView<T> table, Consumer<T> onDoubleClick, MenuItem... items) {
