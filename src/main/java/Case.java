@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * - Encapsulated suspect and evidence ID lists with defensive copying to prevent unwanted external mutations.
  */
 public class Case implements Serializable {
+
     private String caseId;
     private String title;
     private String dateOpened;

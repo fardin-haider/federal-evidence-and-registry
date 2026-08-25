@@ -98,8 +98,8 @@
 }
 
 /*
-   HOME DASHBOARD — VIBRANT CARD THEMES
-  */
+  HOME DASHBOARD — VIBRANT CARD THEMES
+ */
 
 /* Base Stat Card */
 .stat-card {
@@ -328,7 +328,7 @@
 
 .table-view .column-header .label {
     -fx-text-fill: #787B86;
-    -fx-font-weight: extra bold;
+    -fx-font-weight: 800;
     -fx-font-size: 14px;
 }
 

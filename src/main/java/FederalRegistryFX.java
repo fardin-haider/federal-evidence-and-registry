@@ -2,7 +2,6 @@ import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
@@ -60,7 +59,6 @@ public class FederalRegistryFX extends Application {
     private Label welcomeLabel;
     private TabPane tabPane;
     private Tab adminTab;
-    private TextArea searchDisplay;
     private ComboBox<String> deleteTypeChoice;
     private ListView<String> deleteListView;
 
@@ -168,7 +166,7 @@ public class FederalRegistryFX extends Application {
         title.getStyleClass().add("login-title");
 
         Label subtitle = new Label("Enter authorized credentials to unlock intelligence database");
-        subtitle.setStyle("-fx-text-fill: #7f848e; -fx-font-size: 11.5px;");
+        subtitle.setStyle("-fx-text-fill: #7f848e; -fx-font-size: 12px;");
         subtitle.setWrapText(true);
         subtitle.setTextAlignment(TextAlignment.CENTER);
 
@@ -206,13 +204,8 @@ public class FederalRegistryFX extends Application {
         btn.setDefaultButton(true);
         btn.setMaxWidth(Double.MAX_VALUE);
         btn.getStyleClass().add("login-button");
-        btn.setOnAction(e -> {
-            try {
-                authenticate(userField, pwBox, errorLabel);
-            } catch (RegistryValidationException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+        btn.setOnAction(e -> authenticate(userField, pwBox, errorLabel)
+        );
 
         // 5. Official Footer
         Label footerNotice = new Label("🔒 Official Federal Investigation Network\nUnauthorized access attempts are monitored and logged.");
@@ -226,7 +219,10 @@ public class FederalRegistryFX extends Application {
         return root;
     }
 
-    private void authenticate(TextField userField, PasswordField pwBox, Label errorLabel) throws RegistryValidationException {
+    private void authenticate(TextField userField, PasswordField pwBox, Label errorLabel) {
+        try {
+            // VALIDATE CREDENTIALS FIRST
+            validateAgentCredentials(userField.getText(), pwBox.getText());
         for (User u : db.users.values()) {
             if (u.getUsername().equalsIgnoreCase(userField.getText().trim()) && u.getPassword().equals(pwBox.getText())) {
                 loggedInUser = u;
@@ -249,9 +245,14 @@ public class FederalRegistryFX extends Application {
                 return;
             }
         }
-        validateAgentCredentials(userField.getText().trim(), pwBox.getText());
         errorLabel.setText("Access Denied: Invalid agent credentials.");
         showAlert(Alert.AlertType.ERROR, "Authentication Error", "Access Denied. Invalid credentials.");
+
+        } catch (RegistryValidationException e) {
+            // 4. DISPLAY THE CUSTOM EXCEPTION MESSAGE ON SCREEN
+            errorLabel.setText(e.getMessage());
+            showAlert(Alert.AlertType.WARNING, "Validation Error", e.getMessage());
+        }
     }
 
     /** ================== DASHBOARD & TABS ================== */
@@ -318,8 +319,8 @@ public class FederalRegistryFX extends Application {
 //        homePane.setCenter(statsBox);
 //        return homePane;
 //    }
-    /** ==================== UPGRADED HOME PAGE ==================== */
-    /** ==================== RESPONSIVE HOME PANE ==================== */
+    /** ==================== UPGRADED HOME PAGE ====================
+       ==================== RESPONSIVE HOME PANE ==================== */
     private BorderPane createHomePane() {
         BorderPane homePane = new BorderPane();
         homePane.setPadding(new Insets(20));
@@ -509,6 +510,7 @@ public class FederalRegistryFX extends Application {
     }
 
     /** ================== CASE MANAGEMENT ================== */
+    @SuppressWarnings("unchecked")
     private BorderPane createCasePane() {
         BorderPane pane = new BorderPane(); pane.getStyleClass().add(CLASS_CONTENT_PANE);
 
@@ -551,7 +553,7 @@ public class FederalRegistryFX extends Application {
     }
 
     public void exportDossier(){
-        String id = promptText("Export Dossier", "Enter Case ID:");
+        String id = promptText();
         if (id != null && db.cases.containsKey(id.trim())) { generateDossier(id.trim()); showAlert(Alert.AlertType.INFORMATION, "Exported", "Dossier exported to Dossier_" + id.trim() + ".txt"); }
         else if (id != null) showAlert(Alert.AlertType.ERROR, "Not Found", "Case ID not found.");
     }
@@ -567,10 +569,11 @@ public class FederalRegistryFX extends Application {
         grid.addRow(1, new Label("Initial Status:"), statusBox);
         dialog.getDialogPane().setContent(grid);
 
-        Node createBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node createBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         createBtn.setDisable(true); titleField.textProperty().addListener((o, old, newVal) -> createBtn.setDisable(newVal.trim().isEmpty()));
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        // NEW (100% null-safe):
+        if (showAndConfirm(dialog)) {
             String id = "C-" + LocalDate.now().getYear() + "-" + String.format("%03d", db.cases.size() + 1);
             db.cases.put(id, new Case(id, titleField.getText().trim(), LocalDate.now().toString(), statusBox.getValue()));
             refreshAllDisplays();
@@ -590,10 +593,11 @@ public class FederalRegistryFX extends Application {
         grid.addRow(2, new Label("Case Status:"), statusBox);
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         titleField.textProperty().addListener((o, old, newVal) -> saveBtn.setDisable(newVal.trim().isEmpty()));
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        // NEW (100% null-safe):
+        if (showAndConfirm(dialog)) {
             c.setTitle(titleField.getText().trim()); c.setStatus(statusBox.getValue());
             refreshAllDisplays();
             showAlert(Alert.AlertType.INFORMATION, "Case Updated", "Changes saved successfully.");
@@ -601,7 +605,7 @@ public class FederalRegistryFX extends Application {
     }
 
     private void quickUpdateCaseStatus(Case c) {
-        String status = promptChoice("Update Status", "Select new status for " + c.getCaseId() + ":", Arrays.asList("Open", "Closed", "Cold"), c.getStatus());
+        String status = promptChoice("Select new status for " + c.getCaseId() + ":", Arrays.asList("Open", "Closed", "Cold"), c.getStatus());
         if (status != null) { c.setStatus(status); refreshAllDisplays(); }
     }
 
@@ -616,6 +620,7 @@ public class FederalRegistryFX extends Application {
     }
 
     /** ================== SUSPECT REGISTRY ================== */
+    @SuppressWarnings("unchecked")
     private BorderPane createSuspectPane() {
         BorderPane pane = new BorderPane(); pane.getStyleClass().add(CLASS_CONTENT_PANE);
 
@@ -669,12 +674,12 @@ public class FederalRegistryFX extends Application {
         grid.addRow(2, new Label("DOB:"), dobPicker); grid.addRow(3, new Label("Traits:"), traitsField); grid.addRow(4, new Label("Status:"), statusBox);
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         saveBtn.setDisable(true);
         Runnable val = () -> saveBtn.setDisable(fNameField.getText().trim().isEmpty() || lNameField.getText().trim().isEmpty());
         fNameField.textProperty().addListener(o -> val.run()); lNameField.textProperty().addListener(o -> val.run());
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             String id = "S-" + String.format("%04d", db.suspects.size() + 1);
             db.suspects.put(id, new Suspect(id, fNameField.getText().trim(), lNameField.getText().trim(), dobPicker.getValue() != null ? dobPicker.getValue().toString() : "Unknown", traitsField.getText().isEmpty() ? "None recorded" : traitsField.getText(), statusBox.getValue()));
             refreshAllDisplays(); showAlert(Alert.AlertType.INFORMATION, "Success", "Suspect " + id + " registered.");
@@ -700,11 +705,11 @@ public class FederalRegistryFX extends Application {
         grid.addRow(6, new Label("Aliases:"), new VBox(6, aliasesList, new HBox(8, newAlias, addAliasBtn, remAliasBtn)));
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         Runnable val = () -> saveBtn.setDisable(fNameField.getText().trim().isEmpty() || lNameField.getText().trim().isEmpty());
         fNameField.textProperty().addListener(o -> val.run()); lNameField.textProperty().addListener(o -> val.run());
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             s.setFirstName(fNameField.getText().trim()); s.setLastName(lNameField.getText().trim());
             s.setDateOfBirth(dobPicker.getValue() != null ? dobPicker.getValue().toString() : "Unknown");
             s.setPhysicalTraits(traitsField.getText().trim()); s.setStatus(statusBox.getValue());
@@ -714,7 +719,7 @@ public class FederalRegistryFX extends Application {
     }
 
     private void quickUpdateSuspectStatus(Suspect s) {
-        String status = promptChoice("Update Status", "New status for " + s.getId() + ":", Arrays.asList("Wanted", "In Custody", "Under Surveillance", "Cleared"), s.getStatus());
+        String status = promptChoice("New status for " + s.getId() + ":", Arrays.asList("Wanted", "In Custody", "Under Surveillance", "Cleared"), s.getStatus());
         if (status != null) { s.setStatus(status); refreshAllDisplays(); }
     }
 
@@ -730,7 +735,7 @@ public class FederalRegistryFX extends Application {
         GridPane grid = createFormGrid(); grid.addRow(0, new Label("Suspect:"), sBox); grid.addRow(1, new Label("Case:"), cBox);
         dialog.getDialogPane().setContent(grid);
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             if (sBox.getValue() == null || cBox.getValue() == null) { showAlert(Alert.AlertType.ERROR, "Error", "Select both."); return; }
             if (sBox.getValue().getLinkedCaseIds().contains(cBox.getValue().getCaseId())) { showAlert(Alert.AlertType.WARNING, "Already Linked", "Already linked."); return; }
             sBox.getValue().linkCase(cBox.getValue().getCaseId()); cBox.getValue().addSuspect(sBox.getValue().getId());
@@ -750,6 +755,7 @@ public class FederalRegistryFX extends Application {
     }
 
     /** ================== EVIDENCE LOCKER ================== */
+    @SuppressWarnings("unchecked")
     private BorderPane createEvidencePane() {
         BorderPane pane = new BorderPane(); pane.getStyleClass().add(CLASS_CONTENT_PANE);
 
@@ -804,11 +810,11 @@ public class FederalRegistryFX extends Application {
         GridPane grid = createFormGrid(); grid.addRow(0, new Label("Case:"), cBox); grid.addRow(1, new Label("Type:"), typeBox); grid.addRow(2, new Label("Description:"), descField);
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0)); saveBtn.setDisable(true);
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst()); saveBtn.setDisable(true);
         Runnable val = () -> saveBtn.setDisable(cBox.getValue() == null || descField.getText().trim().isEmpty());
         cBox.valueProperty().addListener(o -> val.run()); descField.textProperty().addListener(o -> val.run());
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             String id = "EV-" + String.format("%04d", db.evidence.size() + 1);
             Evidence ev = new Evidence(id, cBox.getValue().getCaseId(), typeBox.getValue(), descField.getText().trim(), "In Storage");
             ev.logCustody("Initial intake logged by Agent " + loggedInUser.getLastName() + " at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
@@ -830,10 +836,11 @@ public class FederalRegistryFX extends Application {
         grid.addRow(3, new Label("Description:"), descField); grid.addRow(4, new Label("Status:"), statusBox);
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         descField.textProperty().addListener((o, old, newVal) -> saveBtn.setDisable(newVal.trim().isEmpty() || cBox.getValue() == null));
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+
+        if (showAndConfirm(dialog)) {
             if (cBox.getValue() != null && !cBox.getValue().getCaseId().equals(ev.getCaseId())) { ev.setCaseId(cBox.getValue().getCaseId()); cBox.getValue().addEvidence(ev.getEvidenceId()); }
             String oldStat = ev.getStatus(); ev.setType(typeBox.getValue()); ev.setDescription(descField.getText().trim()); ev.setStatus(statusBox.getValue());
             ev.logCustody("Edited (Status: " + oldStat + " -> " + ev.getStatus() + ") by " + loggedInUser.getLastName() + " at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
@@ -842,7 +849,7 @@ public class FederalRegistryFX extends Application {
     }
 
     private void quickUpdateEvidenceStatus(Evidence ev) {
-        String status = promptChoice("Update Status", "New Status for " + ev.getEvidenceId() + ":", Arrays.asList("In Storage", "At Lab/Forensics", "Released/Destroyed"), ev.getStatus());
+        String status = promptChoice("New Status for " + ev.getEvidenceId() + ":", Arrays.asList("In Storage", "At Lab/Forensics", "Released/Destroyed"), ev.getStatus());
         if (status != null) { ev.setStatus(status); ev.logCustody("Status -> " + status + " by " + loggedInUser.getLastName() + " at " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))); refreshAllDisplays(); }
     }
 
@@ -855,6 +862,7 @@ public class FederalRegistryFX extends Application {
 
 
     /** ================== ADMIN CONSOLE ================== */
+    @SuppressWarnings("unchecked")
     private VBox createAdminPane() {
         VBox pane = new VBox(14); pane.setAlignment(Pos.CENTER); pane.getStyleClass().add(CLASS_CONTENT_PANE); pane.setPadding(new Insets(18));
 
@@ -899,11 +907,11 @@ public class FederalRegistryFX extends Application {
         GridPane grid = createFormGrid(); grid.addRow(0, new Label("Username:"), uField); grid.addRow(1, new Label("Password:"), pField);
         grid.addRow(2, new Label("Last Name:"), lField); grid.addRow(3, new Label("Role:"), roleBox); dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0)); saveBtn.setDisable(true);
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst()); saveBtn.setDisable(true);
         Runnable val = () -> saveBtn.setDisable(uField.getText().trim().isEmpty() || pField.getText().isEmpty() || lField.getText().trim().isEmpty());
         uField.textProperty().addListener(o -> val.run()); pField.textProperty().addListener(o -> val.run()); lField.textProperty().addListener(o -> val.run());
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             String id = "U-" + String.format("%03d", db.users.size() + 1);
             db.users.put(id, new User(id, "Agent", lField.getText().trim(), "N/A", uField.getText().trim(), pField.getText(), roleBox.getValue()));
             refreshAllDisplays(); showAlert(Alert.AlertType.INFORMATION, "Success", "Agent added.");
@@ -919,11 +927,11 @@ public class FederalRegistryFX extends Application {
         grid.addRow(2, new Label("Last Name:"), lField); grid.addRow(3, new Label("Role:"), roleBox); grid.addRow(4, new Label("Reset PW:"), pField);
         dialog.getDialogPane().setContent(grid);
 
-        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().get(0));
+        Node saveBtn = dialog.getDialogPane().lookupButton(dialog.getDialogPane().getButtonTypes().getFirst());
         Runnable val = () -> saveBtn.setDisable(uField.getText().trim().isEmpty() || lField.getText().trim().isEmpty());
         uField.textProperty().addListener(o -> val.run()); lField.textProperty().addListener(o -> val.run());
 
-        if (dialog.showAndWait().orElse(null).getButtonData().isDefaultButton()) {
+        if (showAndConfirm(dialog)) {
             u.setUsername(uField.getText().trim()); u.setLastName(lField.getText().trim()); u.setRole(roleBox.getValue());
             if (!pField.getText().isEmpty()) u.setPassword(pField.getText()); refreshAllDisplays(); showAlert(Alert.AlertType.INFORMATION, "Updated", "Agent profile updated.");
         }
@@ -951,12 +959,22 @@ public class FederalRegistryFX extends Application {
             throw new RegistryValidationException("Security password must be at least 4 characters.");
         }
     }
-    //S=Source, T=Target.
-    private <S, T> TableColumn<S, T> createCol(String title, double width, Function<S, String> mapper) {
-        TableColumn<S, T> col = new TableColumn<>(title);
-        col.setCellValueFactory(data -> (ObservableValue<T>) new SimpleStringProperty(mapper.apply(data.getValue())))
-        ; col.setPrefWidth(width); return col;
+    // Prevents NullPointerExceptions when the user cancels or closes the dialog.
+
+    private boolean showAndConfirm(Dialog<ButtonType> dialog) {
+        return dialog.showAndWait()
+                .filter(b -> b.getButtonData().isDefaultButton())
+                .isPresent();
     }
+    //S=Source, T=Target.
+
+    private <S> TableColumn<S, String> createCol(String title, double width, Function<S, String> mapper) {
+        TableColumn<S, String> col = new TableColumn<>(title);
+        col.setCellValueFactory(data -> new SimpleStringProperty(mapper.apply(data.getValue())));
+        col.setPrefWidth(width);
+        return col;
+    }
+
 
     private <T> void setupTableInteractions(TableView<T> table, Consumer<T> onDoubleClick, MenuItem... items) {
         ContextMenu ctx = new ContextMenu(items);
@@ -986,22 +1004,26 @@ public class FederalRegistryFX extends Application {
         dialog.getDialogPane().getButtonTypes().addAll(new ButtonType(okText, ButtonBar.ButtonData.OK_DONE), ButtonType.CANCEL); applyTheme(dialog.getDialogPane()); return dialog;
     }
 
-    private String promptText(String title, String header) { TextInputDialog dialog = new TextInputDialog(); dialog.setTitle(title); dialog.setHeaderText(header); applyTheme(dialog.getDialogPane()); return dialog.showAndWait().orElse(null); }
-    private String promptChoice(String title, String header, List<String> choices, String defaultChoice) { ChoiceDialog<String> dialog = new ChoiceDialog<>(defaultChoice, choices); dialog.setTitle(title); dialog.setHeaderText(header); applyTheme(dialog.getDialogPane()); return dialog.showAndWait().orElse(null); }
+    private String promptText() { TextInputDialog dialog = new TextInputDialog(); dialog.setTitle("Export Dossier"); dialog.setHeaderText("Enter Case ID:"); applyTheme(dialog.getDialogPane()); return dialog.showAndWait().orElse(null); }
+    private String promptChoice(String header, List<String> choices, String defaultChoice) { ChoiceDialog<String> dialog = new ChoiceDialog<>(defaultChoice, choices); dialog.setTitle("Update Status"); dialog.setHeaderText(header); applyTheme(dialog.getDialogPane()); return dialog.showAndWait().orElse(null); }
 
     private void showAlert(Alert.AlertType type, String title, String content) { Alert alert = new Alert(type); alert.setTitle(title); alert.setHeaderText(null); alert.setContentText(content); applyTheme(alert.getDialogPane()); alert.showAndWait(); }
     private void showTextAlert(String title, String header, String text) { Alert alert = new Alert(Alert.AlertType.INFORMATION); alert.setTitle(title); alert.setHeaderText(header); TextArea area = new TextArea(text); area.setEditable(false); area.setWrapText(true); area.setPrefSize(480, 340); alert.getDialogPane().setContent(area); applyTheme(alert.getDialogPane()); alert.showAndWait(); }
 
-    private void applyTheme(Node node) { if (stylesheetUrl != null && node instanceof javafx.scene.Parent) ((javafx.scene.Parent)node).getStylesheets().add(stylesheetUrl); else if (stylesheetUrl != null && node instanceof DialogPane) ((DialogPane)node).getStylesheets().add(stylesheetUrl); }
+    private void applyTheme(DialogPane pane) {
+        if (stylesheetUrl != null && pane != null) {
+            pane.getStylesheets().add(stylesheetUrl);
+        }
+    }
     private String getStylesheetUrl() { URL url = FederalRegistryFX.class.getResource("style.css"); return url != null ? url.toExternalForm() : null; }
 
-    private <T> StringConverter<T> displayConverter(Function<T, String> displayFn) { return new StringConverter<T>() { @Override public String toString(T obj) { return obj == null ? "" : displayFn.apply(obj); } @Override public T fromString(String string) { return null; } }; }
+    private <T> StringConverter<T> displayConverter(Function<T, String> displayFn) { return new StringConverter<>() { @Override public String toString(T obj) { return obj == null ? "" : displayFn.apply(obj); } @Override public T fromString(String string) { return null; } }; }
 
     private void generateDossier(String caseId) {
         Case c = db.cases.get(caseId); if (c == null) return;
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("Dossier_" + caseId + ".txt"))) {
             bw.write("=== OFFICIAL CASE DOSSIER ===\nCase ID: " + c.getCaseId() + "\nTitle: " + c.getTitle() + "\nStatus: " + c.getStatus() + "\n");
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) { System.err.println("File operation error: " + e.getMessage()); }
     }
 
     public static void main(String[] args) { launch(args); }

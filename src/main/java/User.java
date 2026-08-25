@@ -5,6 +5,7 @@
  * - Added setters to allow administrators to edit agent names, roles, and credentials.
  */
 public class User extends Person {
+
     private String username;
     private String password;
     private String role; // "Admin" or "Field Agent"
